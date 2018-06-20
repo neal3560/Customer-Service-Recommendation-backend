@@ -9,14 +9,13 @@ from keras.regularizers import l2, l1
 def get_train_test_split(data_X, data_y, test_siz=0.2, random_state=123):
     '''
     input X, y will be processed with one-hot-enoder.
+    TODO: move the get dummies in the last step.
     '''
     print('data_x types:\n', data_X.dtypes)
     data_X_one_hot = pd.get_dummies(data_X)
     spending_cat_dummy = pd.get_dummies(data_X['SpendingCat'])
 
-    print("\n\n* index ***\n\n", data_X_one_hot.index)
-    print("\n\n* index2 ***\n\n", spending_cat_dummy.index)
-    data_X_one_hot = pd.merge(data_X_one_hot, spending_cat_dummy, on=data_X_one_hot.index, how='outer')
+    data_X_one_hot = pd.concat([data_X_one_hot, spending_cat_dummy], axis=1)
     print("dummies shape: ",data_X_one_hot.shape)
     print("dummies columns: ",data_X_one_hot.columns)
 

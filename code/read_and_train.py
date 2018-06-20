@@ -18,7 +18,7 @@ mongo_name      = 'mongoadmin'
 mongo_pswd      = 'secret'
 
 usr_df = read_mongo(db_name, usr_collection, host= mongo_host, username=mongo_name, password=mongo_pswd )
-usr_df = pd.read_csv('/home/user_train.csv')
+#usr_df = pd.read_csv('/home/user_train.csv')
 print("fond number of usr records: ", usr_df.shape)
 print("head of usr:\n ", usr_df.head(3))
 
