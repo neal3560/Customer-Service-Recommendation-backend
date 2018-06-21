@@ -2,9 +2,10 @@ from __future__ import absolute_import
 import pandas as pd
 from sklearn.model_selection import train_test_split
 import numpy as np
-from keras.models import Sequential
+from keras.models import Sequential, load_model
 from keras.layers import Dense, Activation, Dropout
 from keras.regularizers import l2, l1
+import datetime, os, json
 
 def get_train_test_split(data_X, data_y, test_siz=0.2, random_state=123):
     '''
@@ -40,5 +41,78 @@ def train(X_train, y_train):
     model.add(Dropout(0.6))
     model.add(Dense(10, init='normal', activation='sigmoid'))
     model.compile(loss='categorical_crossentropy', optimizer='adam' ,metrics = ['accuracy'])
+    
     history = model.fit(X_train, y_train, epochs=3, batch_size=32)
+    _save_model(model)
+    
     return history
+
+model_name = '/home/trained_model.h5'
+def _save_model(model):
+    
+    current_time = str(datetime.now())
+    
+    if os.path.exists(model_name):
+        os.rename(model_name, '/home/trained_model_%s.h5' % current_time)
+    model.save(model_name)
+    
+model_instance = None
+def _get_trained_model():
+    if model_instance is None:
+       model_instance = load_model(model_name)
+    return model_instance
+    
+def predict_one(user_behavior):
+    '''
+    user_behavior is the numpy array.
+    '''
+    proba = _get_trained_model.predict_proba(user_behavior)
+    print(proba)
+    # get the top 3
+    return np.argpartition(proba[0], -3)[-3:]
+
+def predict_many(user_behavior):
+    '''
+    Not implemented
+    '''
+    return None
+
+def get_user_from_json(user_json):
+    '''
+    Sample json contains following:
+    Involoved,Class,Sex,Age,Channel,Spending,Product,Location,Title,SpendingCat,AgeCat
+    
+    TODO:
+    The order of columns should be:
+        Channel               int64
+        Class                 int64
+        Involoved             int64
+        Location_C            uint8
+        Location_Q            uint8
+        Location_S            uint8
+        Product_A             uint8
+        Product_B             uint8
+        Product_C             uint8
+        Product_D             uint8
+        Product_E             uint8
+        Product_F             uint8
+        Product_G6            uint8
+        Product_T             uint8
+        Product_XX            uint8
+        Sex_female            uint8
+        Sex_male              uint8
+        SpendingCat_0         uint8
+        SpendingCat_1         uint8
+        SpendingCat_2         uint8
+        SpendingCat_3         uint8
+        SpendingCat_4         uint8
+        SpendingCat_5         uint8
+        Title_Master          uint8
+        Title_Miss            uint8
+        Title_Mr              uint8
+        Title_Mrs             uint8
+        Title_Rare            uint8
+        Title_the Countess    uint8
+    '''
+    user_obj = json.loads(user_json)
+    
