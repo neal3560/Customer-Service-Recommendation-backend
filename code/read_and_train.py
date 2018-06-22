@@ -22,6 +22,8 @@ mongo_name      = 'mongoadmin'
 mongo_pswd      = 'secret'
 
 def read_and_train():
+    '''
+    '''
     #usr_df = read_mongo(db_name, usr_collection, host= mongo_host, username=mongo_name, password=mongo_pswd )
     usr_df = pd.read_csv('/home/craft/docker/user_train.csv')
     print("fond number of usr records: ", usr_df.shape)

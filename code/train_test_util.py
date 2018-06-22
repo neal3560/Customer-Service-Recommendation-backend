@@ -2,6 +2,7 @@ from __future__ import absolute_import
 import pandas as pd
 from sklearn.model_selection import train_test_split
 import numpy as np
+from data_clean import sort_columns
 from keras.models import Sequential, load_model
 from keras.layers import Dense, Activation, Dropout
 from keras.regularizers import l2, l1
@@ -12,6 +13,9 @@ def get_train_test_split(data_X, data_y, test_siz=0.2, random_state=123):
     input X, y will be processed with one-hot-enoder.
     TODO: move the get dummies in the last step.
     '''
+    
+    sort_columns(data_X)
+    
     print('data_x types:\n', data_X.dtypes)
     data_X_one_hot = pd.get_dummies(data_X)
     spending_cat_dummy = pd.get_dummies(data_X['SpendingCat'])
@@ -53,10 +57,11 @@ def _save_model(model):
     current_time = str(datetime.now())
     
     if os.path.exists(model_name):
-        os.rename(model_name, '/home/trained_model_%s.h5' % current_time)
+        os.rename(model_name, current_time + model_name)
     model.save(model_name)
     
 model_instance = None
+
 def _get_trained_model():
     if model_instance is None:
        model_instance = load_model(model_name)

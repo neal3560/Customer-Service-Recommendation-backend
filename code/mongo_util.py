@@ -42,3 +42,6 @@ def read_mongo(db, collection, query={}, host='localhost', port=27017, username=
         del df['_id']
 
     return df
+
+def save_one_user_record(userjson):
+    userjson 
