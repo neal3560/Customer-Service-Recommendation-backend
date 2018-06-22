@@ -76,14 +76,17 @@ def convert_raw_perdict_usr_data(usr_json):
 
 def my_one_hot_encoder(enum_arr, data):
     '''
-    Encode according to the enum array.
+    Encode according to the enum array. 
+    
+    refer to evernot 'python data manipulation' for more
     '''
     enum_to_int = dict((t, i) for i, t in enumerate(enum_arr))
     int_encoded = [enum_to_int[t] for t in data]
     onehot_encoded = list()
     
     for v in int_encoded:
-        all_zero_arr = [0 for _ in range(len(titlearr)) ]
+        all_zero_arr = [0 for _ in range(len(enum_arr)) ]
         all_zero_arr[v] = 1
         onehot_encoded.append(all_zero_arr)
     
+    return onehot_encoded
