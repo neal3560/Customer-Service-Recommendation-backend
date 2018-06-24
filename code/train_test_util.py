@@ -2,7 +2,7 @@ from __future__ import absolute_import
 import pandas as pd
 from sklearn.model_selection import train_test_split
 import numpy as np
-from data_clean import sort_columns
+from data_clean import sort_columns, my_one_hot_encoder2, load_input_meta_data
 from keras.models import Sequential, load_model
 from keras.layers import Dense, Activation, Dropout
 from keras.regularizers import l2, l1
@@ -18,9 +18,9 @@ def get_train_test_split(data_X, data_y, test_siz=0.2, random_state=123):
     
     print('data_x types:\n', data_X.dtypes)
     data_X_one_hot = pd.get_dummies(data_X)
-    spending_cat_dummy = pd.get_dummies(data_X['SpendingCat'])
+    dummy = pd.get_dummies(data_X['SpendingCat'])
 
-    data_X_one_hot = pd.concat([data_X_one_hot, spending_cat_dummy], axis=1)
+    data_X_one_hot = pd.concat([data_X_one_hot, dummy], axis=1)
     print("dummies shape: ",data_X_one_hot.shape)
     print("dummies columns: ",data_X_one_hot.columns)
 
@@ -30,7 +30,43 @@ def get_train_test_split(data_X, data_y, test_siz=0.2, random_state=123):
     X_train.drop(columns='SpendingCat', inplace=True)
     X_test.drop(columns='SpendingCat', inplace=True)
     X_test = X_test.add(pd.get_dummies(data_X['SpendingCat']))
-    y_train = pd.get_dummies(y_train)
+    # TODO dummies encoder is ok for now until we need to explain the prediction
+    y_train = pd.get_dummies(y_train) 
+    y_test = pd.get_dummies(y_test)
+    return X_train, X_test, y_train, y_test
+
+def get_train_test_split2(data_X, data_y, test_siz=0.2, random_state=123):
+    '''
+    We must use our own version of one-hot-encoder to ensure both training and
+    prediction data are treated the same way.
+    
+    input X, y will be processed with one-hot-enoder.
+    TODO: move the get dummies in the last step.
+    '''
+    
+    sort_columns(data_X)
+    
+    print('data_x types:\n', data_X.dtypes)
+    
+    # TODO move this part to a function
+    X_meta = load_input_meta_data('x')
+    y_meta = load_input_meta_data('y')
+    data_X_one_hot = data_X
+    
+    col_names = ['SpendingCat', 'Sex', 'Product', 'Title']
+    col_names = np.sort(col_names)
+    for n in col_names:
+        dummy = my_one_hot_encoder2(n, X_meta[n], data_X[n])
+        data_X_one_hot = pd.concat([data_X_one_hot, dummy], axis=1)
+        data_X_one_hot.drop(n, inplace = True)
+    
+    print("dummies shape: ", data_X_one_hot.shape)
+    print("dummies columns: ", data_X_one_hot.columns)
+
+    X_train, X_test, y_train, y_test = train_test_split(\
+            data_X_one_hot, data_y, test_size=0.2, random_state=123)
+
+    y_train = (y_train)
     y_test = pd.get_dummies(y_test)
     return X_train, X_test, y_train, y_test
 
