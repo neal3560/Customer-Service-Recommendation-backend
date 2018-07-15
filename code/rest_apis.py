@@ -9,6 +9,7 @@ from flask import Flask, request
 from flask_restful import Resource, Api
 from read_and_train import read_and_train
 from train_test_util import predict_one, get_user_from_json
+
 import json
 
 app = Flask(__name__)
@@ -25,10 +26,10 @@ class TrainModel(Resource):
         result_acc = read_and_train()
         return {'Final Accuracy': result_acc}
     
-class Predict_one(Resource):
-    user_json = request.get_json()
-    user_arr = get_user_from_json(user_json)
-    def put(self):
+# class Predict_one(Resource):
+#     user_json = request.get_json()
+#     user_arr = get_user_from_json(user_json)
+    # def put(self):
         
 api.add_resource(TrainModel, url_train_model)
 

@@ -8,9 +8,10 @@ Created on Fri Jun 22 00:01:08 2018
 import pandas as pd
 import json, os, datetime
 import numpy as np
+from os.path import expanduser
 
-name_working_fodler = '/home/'
-name_trian_meta_data = '/meta_data_train.json'
+name_working_fodler = expanduser('~')+'/'
+name_trian_meta_data = '_meta_data_train.json'
 
 
 def sort_columns(data):
@@ -42,11 +43,11 @@ def save_input_meta_data(x_or_y , d):
         a_dict = {c : d[c].unique().tolist()}
         usr_meta_data.update(a_dict)
     
-    current_time = str(datetime.now())
-    full_path = name_working_fodler + x_or_y + name_trian_meta_data;
-    if os.path.edists(full_path):
-        os.rename(full_path, \
-                  name_working_fodler + current_time + x_or_y + usr_meta_data)
+    current_time = str(datetime.datetime.now())
+    full_path = name_working_fodler + x_or_y + name_trian_meta_data
+    if os.path.exists(full_path):
+        os.rename(full_path,
+                  name_working_fodler + current_time + x_or_y + name_trian_meta_data)
     
     f =  open( full_path, 'w')
     json.dumps(usr_meta_data, f)
@@ -57,7 +58,7 @@ def load_input_meta_data(x_or_y):
     return the meta data as dict
     see save_input_meta_data for the saved data
     '''
-    full_path = name_working_fodler + x_or_y + name_trian_meta_data;
+    full_path = name_working_fodler + x_or_y + name_trian_meta_data
     f = open(full_path, 'r')
     return dict(str(json.load(f)))
     

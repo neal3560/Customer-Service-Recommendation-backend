@@ -24,8 +24,9 @@ def get_train_test_split(data_X, data_y, test_siz=0.2, random_state=123):
     print("dummies shape: ",data_X_one_hot.shape)
     print("dummies columns: ",data_X_one_hot.columns)
 
-    X_train, X_test, y_train, y_test = train_test_split(\
-            data_X_one_hot, data_y, test_size=0.2, random_state=123)
+    X_train, X_test, y_train, y_test = train_test_split(
+                                            data_X_one_hot, data_y,
+                                            test_size=0.2, random_state=123)
 
     X_train.drop(columns='SpendingCat', inplace=True)
     X_test.drop(columns='SpendingCat', inplace=True)
@@ -121,7 +122,8 @@ def predict_many(user_behavior):
 def get_user_from_json(user_json):
     '''
     Sample json contains following:
-    Involoved,Class,Sex,Age,Channel,Spending,Product,Location,Title,SpendingCat,AgeCat
+    Involoved,Class,Sex,Age,Channel,Spending,Product,Location,Title,
+    SpendingCat,AgeCat
     
     TODO:
     The order of columns should be:
