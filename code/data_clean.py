@@ -8,6 +8,8 @@ Created on Fri Jun 22 00:01:08 2018
 import pandas as pd
 import json, os, datetime
 import numpy as np
+import cPickle as pickle
+
 from os.path import expanduser
 
 name_working_fodler = expanduser('~')+'/'
@@ -20,12 +22,13 @@ def sort_columns(data):
     '''
     return data.sort_index(axis=1, inplace=True)
 
+
 def save_input_meta_data(x_or_y , d):
-    '''
+    """
     The meta data will be used for one-hot-encoding
     Save meta data for d after load the data from db, but befor training and one-hot encoding.
     the data needs to have its columns sorted already.
-    
+
     E.G.
         {u'Channel': [0, 1, 2, 5, 3, 4, 6],
          u'Class': [3, 1, 2],
@@ -35,7 +38,7 @@ def save_input_meta_data(x_or_y , d):
          u'Sed': [u'male', u'female'],
          u'SpendingCat': [0, 1, 4, 2, 5, 3],
          u'Title': [u'Mr', u'Mrs', u'Miss', u'Master', u'Rare', u'the Countess']}
-    '''
+    """
     
     usr_meta_data = {}
     
@@ -48,20 +51,23 @@ def save_input_meta_data(x_or_y , d):
     if os.path.exists(full_path):
         os.rename(full_path,
                   name_working_fodler + current_time + x_or_y + name_trian_meta_data)
-    
-    f =  open( full_path, 'w')
-    json.dumps(usr_meta_data, f)
-    f.close()
-    
+
+    with open(full_path, 'wb') as f:
+        json.dump(usr_meta_data, f)
+
+    #     pickle.dump(usr_meta_data, f)
+
 def load_input_meta_data(x_or_y):
     '''
     return the meta data as dict
     see save_input_meta_data for the saved data
     '''
     full_path = name_working_fodler + x_or_y + name_trian_meta_data
-    f = open(full_path, 'r')
-    return dict(str(json.load(f)))
-    
+    with open(full_path, 'rb') as f:
+        dic = json.load(f)
+        return dic
+
+
 def convert_raw_perdict_usr_data(usr_json):
     '''
     usr_json sample:
@@ -72,7 +78,7 @@ def convert_raw_perdict_usr_data(usr_json):
         TODO udpate it
         array([u'1.0', u'C', u'1', u'Mr', None, u'S', 1, u'0'], dtype=object)
     '''
-    metadata = load_input_meta_data()
+    metadata = load_input_meta_data() # FIXME
     usrarr = np.array([])
     usrobj = json.loads(usr_json)
     
@@ -82,6 +88,7 @@ def convert_raw_perdict_usr_data(usr_json):
         usrarr = np.hstack((usrarr, one_hot_value)) 
     
     return usrarr
+
 
 def my_one_hot_encoder(col_val_enum, data):
     '''
@@ -104,6 +111,7 @@ def my_one_hot_encoder(col_val_enum, data):
         onehot_encoded.append(all_zero_arr)
     
     return np.asarray(onehot_encoded)
+
 
 def my_one_hot_encoder2(col_name, col_val_enum, col_data):
     '''
@@ -133,6 +141,7 @@ def my_one_hot_encoder2(col_name, col_val_enum, col_data):
         onehot_encoded  = onehot_encoded.append(tmp, ignore_index=True)
         
     return onehot_encoded
+
 
 def encode_all_col(X):
     return None

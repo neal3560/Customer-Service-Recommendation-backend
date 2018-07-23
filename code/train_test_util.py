@@ -1,4 +1,4 @@
-from __future__ import absolute_import
+# from __future__ import absolute_import
 import pandas as pd
 from sklearn.model_selection import train_test_split
 import numpy as np
@@ -50,7 +50,7 @@ def get_train_test_split2(data_X, data_y, test_siz=0.2, random_state=123):
     print('data_x types:\n', data_X.dtypes)
     
     # TODO move this part to a function
-    X_meta = load_input_meta_data('x')
+    X_meta = load_input_meta_data('X')
     y_meta = load_input_meta_data('y')
     data_X_one_hot = data_X
     

@@ -10,7 +10,7 @@ usr = db.usr
 usr.drop()
 # to save the csv to mongodb
 import pandas as pd
-train = pd.read_csv('/home/user_train.csv')
+train = pd.read_csv('/home/craft/docker/user_train.csv')
 
 for doc in train.T.to_dict():
     value = train.T[doc].to_dict()
