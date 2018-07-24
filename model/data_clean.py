@@ -52,33 +52,34 @@ def save_input_meta_data(x_or_y , d):
         os.rename(full_path,
                   name_working_fodler + current_time + x_or_y + name_trian_meta_data)
 
-    with open(full_path, 'wb') as f:
+    with open(full_path, 'w') as f:
         json.dump(usr_meta_data, f)
 
     #     pickle.dump(usr_meta_data, f)
 
+
 def load_input_meta_data(x_or_y):
-    '''
+    """
     return the meta data as dict
     see save_input_meta_data for the saved data
-    '''
+    """
     full_path = name_working_fodler + x_or_y + name_trian_meta_data
-    with open(full_path, 'rb') as f:
+    with open(full_path, 'r') as f:
         dic = json.load(f)
         return dic
 
 
 def convert_raw_perdict_usr_data(usr_json):
-    '''
+    """
     usr_json sample:
         {"Involoved":1, "Class":1, "Channel":"0",
          "Product":"C", "Location":"S", "Title":"Mr", "SpendingCat": 1}
-    
+
     result sample:
         TODO udpate it
         array([u'1.0', u'C', u'1', u'Mr', None, u'S', 1, u'0'], dtype=object)
-    '''
-    metadata = load_input_meta_data() # FIXME
+    """
+    metadata = load_input_meta_data()  # FIXME
     usrarr = np.array([])
     usrobj = json.loads(usr_json)
     
@@ -91,16 +92,16 @@ def convert_raw_perdict_usr_data(usr_json):
 
 
 def my_one_hot_encoder(col_val_enum, data):
-    '''
+    """
     Existing one hot encoders doesn't fit our needs.
-    
+
     col_val_enum: Encode according to the enum array. enum array E.G. ['Mr', 'Mrs', 'Miss', 'Master']
     data:     Can be n-d array
-    
+
     retrun a dataframe
-    
+
     refer to evernote 'python data manipulation' for more
-    '''
+    """
     enum_to_int = dict((t, i) for i, t in enumerate(col_val_enum))
     int_encoded = [enum_to_int[t] for t in data]
     onehot_encoded = list()
@@ -114,23 +115,23 @@ def my_one_hot_encoder(col_val_enum, data):
 
 
 def my_one_hot_encoder2(col_name, col_val_enum, col_data):
-    '''
+    """
     Existing one hot encoders doesn't fit our needs.
     This method encodes one column.
-    
+
     col_val_enum: Encode according to the enum array. enum array E.G. ['Mr', 'Mrs', 'Miss', 'Master']
     col_data:         E.G. ['Mr', 'Mrs', 'Miss']  - all data in one column
                   TODO don't support None or NaN
-    
+
     retrun a dataframe:
-    
+
         Master  Miss   Mr  Mrs
     0     0.0   0.0  1.0  0.0
     1     0.0   0.0  0.0  1.0
     2     0.0   1.0  0.0  0.0
 
     refer to evernote 'python data manipulation' for more
-    '''
+    """
     zeros = [0] * len(col_val_enum)
     zero_series = pd.Series(zeros, index=col_val_enum) # TODO append col_name as prefix in index to avoid duplicates
     onehot_encoded = pd.DataFrame([])

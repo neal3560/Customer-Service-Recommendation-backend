@@ -9,9 +9,9 @@ Created on Mon Jun 18 18:54:47 2018
 @author: Jim
 """
 
-from code.train_test_util import get_train_test_split2, train
-from code.data_clean import save_input_meta_data
-from code.mongo_util import read_mongo
+from model.train_test_util import get_train_test_split2, train
+from model.data_clean import save_input_meta_data
+from model.mongo_util import read_mongo
 import pandas as pd
 
 db_name = 'usrdb'
@@ -35,7 +35,7 @@ def read_and_train():
     
     # 1. read input data
     #usr_df = read_mongo(db_name, usr_collection, host= mongo_host, username=mongo_name, password=mongo_pswd )
-    usr_df = pd.read_csv('/home/craft/docker/user_train.csv')
+    usr_df = pd.read_csv('./user_train.csv')
     
     # 1.1. sort columns
     usr_df.sort_index(axis=1)

@@ -36,14 +36,15 @@ def get_train_test_split(data_X, data_y, test_siz=0.2, random_state=123):
     y_test = pd.get_dummies(y_test)
     return X_train, X_test, y_train, y_test
 
+
 def get_train_test_split2(data_X, data_y, test_siz=0.2, random_state=123):
-    '''
+    """
     We must use our own version of one-hot-encoder to ensure both training and
     prediction data are treated the same way.
-    
+
     input X, y will be processed with one-hot-enoder.
     TODO: move the get dummies in the last step.
-    '''
+    """
     
     sort_columns(data_X)
     
@@ -53,23 +54,25 @@ def get_train_test_split2(data_X, data_y, test_siz=0.2, random_state=123):
     X_meta = load_input_meta_data('X')
     y_meta = load_input_meta_data('y')
     data_X_one_hot = data_X
-    
-    col_names = ['SpendingCat', 'Sex', 'Product', 'Title']
+
+    # TODO the encoded columns should come from user meta data instead of hard code.
+    col_names = ['SpendingCat', 'Sex', 'Product', 'Title', 'Location']
     col_names = np.sort(col_names)
     for n in col_names:
         dummy = my_one_hot_encoder2(n, X_meta[n], data_X[n])
         data_X_one_hot = pd.concat([data_X_one_hot, dummy], axis=1)
-        data_X_one_hot.drop(n, inplace = True)
+        data_X_one_hot.drop(n, inplace=True, axis=1)
     
     print("dummies shape: ", data_X_one_hot.shape)
     print("dummies columns: ", data_X_one_hot.columns)
 
-    X_train, X_test, y_train, y_test = train_test_split(\
-            data_X_one_hot, data_y, test_size=0.2, random_state=123)
+    X_train, X_test, y_train, y_test = train_test_split(
+        data_X_one_hot, data_y, test_size=0.2, random_state=123)
 
-    y_train = (y_train)
-    y_test = pd.get_dummies(y_test)
+    y_train = my_one_hot_encoder2('y', y_meta['y'],  y_train)
+    y_test = my_one_hot_encoder2('y', y_meta['y'], y_test)
     return X_train, X_test, y_train, y_test
+
 
 def train(X_train, y_train):
 
@@ -88,7 +91,10 @@ def train(X_train, y_train):
     
     return history
 
+
 model_name = '/home/trained_model.h5'
+
+
 def _save_model(model):
     
     current_time = str(datetime.now())
@@ -99,11 +105,13 @@ def _save_model(model):
     
 model_instance = None
 
+
 def _get_trained_model():
     if model_instance is None:
        model_instance = load_model(model_name)
     return model_instance
     
+
 def predict_one(user_behavior):
     '''
     user_behavior is the numpy array.
@@ -113,11 +121,13 @@ def predict_one(user_behavior):
     # get the top 3
     return np.argpartition(proba[0], -3)[-3:]
 
+
 def predict_many(user_behavior):
     '''
     Not implemented
     '''
     return None
+
 
 def get_user_from_json(user_json):
     '''
@@ -158,4 +168,3 @@ def get_user_from_json(user_json):
         Title_the Countess    uint8
     '''
     user_obj = json.loads(user_json)
-    
