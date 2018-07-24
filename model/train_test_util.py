@@ -86,7 +86,7 @@ def train(X_train, y_train):
     model.add(Dense(10, init='normal', activation='sigmoid'))
     model.compile(loss='categorical_crossentropy', optimizer='adam' ,metrics = ['accuracy'])
     
-    history = model.fit(X_train, y_train, epochs=3, batch_size=32)
+    history = model.fit(X_train, y_train, epochs=30, batch_size=32)
     _save_model(model)
     
     return history
@@ -100,7 +100,7 @@ def _save_model(model):
     current_time = str(datetime.datetime.now().timestamp())
     
     if os.path.exists(model_name):
-        os.rename(model_name, current_time + model_name)
+        os.rename(model_name, model_name + current_time)
     model.save(model_name)
     
 model_instance = None
