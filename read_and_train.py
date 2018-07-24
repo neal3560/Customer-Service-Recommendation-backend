@@ -9,9 +9,9 @@ Created on Mon Jun 18 18:54:47 2018
 @author: Jim
 """
 
-from train_test_util import get_train_test_split2, train
-from data_clean import save_input_meta_data
-from mongo_util import read_mongo
+from code.train_test_util import get_train_test_split2, train
+from code.data_clean import save_input_meta_data
+from code.mongo_util import read_mongo
 import pandas as pd
 
 db_name = 'usrdb'
@@ -72,3 +72,5 @@ def read_and_train():
     return history.history['acc'][-1]
 
 
+if __name__ == "__main__":
+    read_and_train()

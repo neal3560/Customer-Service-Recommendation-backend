@@ -8,7 +8,7 @@ Created on Fri Jun 22 00:01:08 2018
 import pandas as pd
 import json, os, datetime
 import numpy as np
-import cPickle as pickle
+import pickle as pickle
 
 from os.path import expanduser
 

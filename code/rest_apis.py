@@ -5,12 +5,9 @@ Created on Wed Jun 20 20:34:21 2018
 
 @author: root
 """
-from flask import Flask, request
+from flask import Flask
 from flask_restful import Resource, Api
 from read_and_train import read_and_train
-from train_test_util import predict_one, get_user_from_json
-
-import json
 
 app = Flask(__name__)
 api = Api(app)

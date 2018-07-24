@@ -2,7 +2,7 @@
 import pandas as pd
 from sklearn.model_selection import train_test_split
 import numpy as np
-from data_clean import sort_columns, my_one_hot_encoder2, load_input_meta_data
+from .data_clean import sort_columns, my_one_hot_encoder2, load_input_meta_data
 from keras.models import Sequential, load_model
 from keras.layers import Dense, Activation, Dropout
 from keras.regularizers import l2, l1
