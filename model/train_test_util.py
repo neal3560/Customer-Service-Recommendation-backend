@@ -92,12 +92,12 @@ def train(X_train, y_train):
     return history
 
 
-model_name = '/home/trained_model.h5'
+model_name = '/tmp/trained_model.h5'
 
 
 def _save_model(model):
     
-    current_time = str(datetime.now())
+    current_time = str(datetime.datetime.now().timestamp())
     
     if os.path.exists(model_name):
         os.rename(model_name, current_time + model_name)
