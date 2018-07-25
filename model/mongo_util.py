@@ -1,4 +1,3 @@
-#!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 """
 Created on Mon Jun 18 03:28:14 2018
@@ -19,7 +18,6 @@ def _connect_mongo(host, port, username, password, db):
         conn.admin.authenticate(username,password)      
     else:
         conn = MongoClient(host, port)
-
 
     return conn[db]
 
