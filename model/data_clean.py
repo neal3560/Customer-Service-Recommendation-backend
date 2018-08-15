@@ -16,9 +16,9 @@ name_trian_meta_data = '_meta_data_train.json'
 
 
 def sort_columns(data):
-    '''
+    """
     For pandas df
-    '''
+    """
     return data.sort_index(axis=1, inplace=True)
 
 

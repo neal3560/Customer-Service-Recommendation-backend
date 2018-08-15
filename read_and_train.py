@@ -33,7 +33,8 @@ def read_and_train():
     """
     
     # 1. read input data
-    #usr_df = read_mongo(db_name, usr_collection, host= mongo_host, username=mongo_name, password=mongo_pswd )
+    # usr_df = read_mongo(db_name, usr_collection, host= mongo_host, username=mongo_name, password=mongo_pswd )
+    #  TODO should use the data in DB.
     usr_df = pd.read_csv('./user_train.csv')
     
     # 1.1. sort columns

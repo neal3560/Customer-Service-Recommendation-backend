@@ -113,9 +113,9 @@ def _get_trained_model():
     
 
 def predict_one(user_behavior):
-    '''
+    """
     user_behavior is the numpy array.
-    '''
+    """
     proba = _get_trained_model.predict_proba(user_behavior)
     print(proba)
     # get the top 3
@@ -123,18 +123,18 @@ def predict_one(user_behavior):
 
 
 def predict_many(user_behavior):
-    '''
+    """
     Not implemented
-    '''
+    """
     return None
 
 
 def get_user_from_json(user_json):
-    '''
+    """
     Sample json contains following:
     Involoved,Class,Sex,Age,Channel,Spending,Product,Location,Title,
     SpendingCat,AgeCat
-    
+
     TODO:
     The order of columns should be:
         Channel               int64
@@ -166,5 +166,5 @@ def get_user_from_json(user_json):
         Title_Mrs             uint8
         Title_Rare            uint8
         Title_the Countess    uint8
-    '''
+    """
     user_obj = json.loads(user_json)
