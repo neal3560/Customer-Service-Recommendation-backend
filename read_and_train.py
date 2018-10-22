@@ -64,9 +64,10 @@ def read_and_train():
     print("going to train.")
     print('X_train:\n', X_train.head())
     print('y_train:\n', y_train.head())
+
     # 6. train and save result
     history = train(X_train, y_train)
-    print("history: ",history.history)
+    print("history: ", history.history)
     print("final accuracy: ", history.history['acc'][-1])
     # TODO save it to mongoDB.
     return history.history['acc'][-1]

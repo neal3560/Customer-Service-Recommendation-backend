@@ -22,10 +22,10 @@ def sort_columns(data):
     return data.sort_index(axis=1, inplace=True)
 
 
-def save_input_meta_data(x_or_y , d):
+def save_input_meta_data(x_or_y, d):
     """
     The meta data will be used for one-hot-encoding
-    Save meta data for d after load the data from db, but befor training and one-hot encoding.
+    Save meta data for d after load the data from db, but before training and one-hot encoding.
     the data needs to have its columns sorted already.
 
     E.G.
