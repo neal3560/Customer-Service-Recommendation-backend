@@ -8,7 +8,7 @@ Created on Mon Jun 18 18:54:47 2018
 @author: Jim
 """
 
-from model.train_test_util import get_train_test_split2, train, _get_validate_acc
+from model.train_test_util import get_train_test_split2, train, _get_validate_acc, predict_one
 from model.data_clean import save_input_meta_data
 from model.mongo_util import read_mongo
 import pandas as pd
@@ -71,6 +71,9 @@ def read_and_train():
     print("final accuracy: ", history.history['acc'][-1])
 
     _get_validate_acc(X_test, y_test)
+
+    predict_one(X_test.iloc[0])
+    predict_one(X_test.iloc[1])
 
     # TODO save it to mongoDB.
     return history.history['acc'][-1]

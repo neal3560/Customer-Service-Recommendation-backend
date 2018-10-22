@@ -135,9 +135,9 @@ def _get_validate_acc(X_test, y_test):
     return acc
 
 
-def _get_n_predict_acc(X_tess, y_test):
+def _get_n_predict_acc(X_test, y_test):
     model: Sequential = _get_trained_model()
-    model.predict_proba()
+    model.predict_proba(X_test)
 
 
 def predict_many(user_behavior):

@@ -131,13 +131,19 @@ def my_one_hot_encoder2(col_name, col_val_enum, col_data):
 
     refer to evernote 'python data manipulation' for more
     """
+    col_name_and_value = []
+    for v in col_val_enum:
+        if pd.isnull(v):
+            v = "nan"
+        col_name_and_value.append(col_name +"_"+ str(v))
+
     zeros = [0] * len(col_val_enum)
-    zero_series = pd.Series(zeros, index=col_val_enum) # TODO append col_name as prefix in index to avoid duplicates
+    zero_series = pd.Series(zeros, index=col_name_and_value)
     onehot_encoded = pd.DataFrame([])
     
     for d in col_data:
         tmp = zero_series.copy()
-        tmp[d] = 1
+        tmp[col_name +"_"+ str(d)] = 1
         onehot_encoded  = onehot_encoded.append(tmp, ignore_index=True)
         
     return onehot_encoded
