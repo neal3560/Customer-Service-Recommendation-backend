@@ -120,7 +120,6 @@ def my_one_hot_encoder2(col_name, col_val_enum, col_data):
 
     col_val_enum: Encode according to the enum array. enum array E.G. ['Mr', 'Mrs', 'Miss', 'Master']
     col_data:         E.G. ['Mr', 'Mrs', 'Miss']  - all data in one column
-                  TODO don't support None or NaN
 
     retrun a dataframe:
 

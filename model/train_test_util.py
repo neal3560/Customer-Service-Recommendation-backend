@@ -86,7 +86,7 @@ def train(X_train, y_train):
     model.add(Dense(10, init='normal', activation='sigmoid'))
     model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 
-    history = model.fit(X_train, y_train, epochs=90, batch_size=32)
+    history = model.fit(X_train, y_train, epochs=26, batch_size=32)
     _save_model(model)
 
     return history
@@ -119,6 +119,7 @@ def predict_one(user_behavior):
     """
     user_behavior is the numpy array.
     """
+    print("shape: " + str(user_behavior.shape))
     proba = _get_trained_model().predict_proba(user_behavior)
     print(proba)
     # get the top 3
@@ -136,16 +137,14 @@ def _get_validate_acc(X_test, y_test):
 
 
 def _get_n_predict_acc(X_test, y_test):
-    model: Sequential = _get_trained_model()
-    model.predict_proba(X_test)
+    count_correct = 0
 
+    for idx, value in X_test.iterrows():
+        top_3 = predict_one(value.to_frame().T)
+        if np.argmax(y_test.iloc[idx]) in top_3:
+            count_correct += 1
 
-def predict_many(user_behavior):
-    """
-    Not implemented
-    """
-    return None
-
+    return count_correct/X_test.__len__()
 
 def get_user_from_json(user_json):
     """
