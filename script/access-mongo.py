@@ -1,5 +1,6 @@
 # coding: utf-8
 
+# Move from CSV to Mongodb.
 from pymongo import MongoClient
 client = MongoClient('mongodb://ivr-rec-mongo:27017/ivrdb')
 client.admin.authenticate('mongoadmin', 'secret')

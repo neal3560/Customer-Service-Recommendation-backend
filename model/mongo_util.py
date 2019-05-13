@@ -15,7 +15,7 @@ def _connect_mongo(host, port, username, password, db):
     if username and password:
         mongo_uri = 'mongodb://%s:%s/%s' % (host, port, db)
         conn = MongoClient(mongo_uri)
-        conn.admin.authenticate(username,password)      
+        conn.admin.authenticate(username, password)
     else:
         conn = MongoClient(host, port)
 
@@ -33,7 +33,7 @@ def read_mongo(db, collection, query={}, host='localhost', port=27017, username=
     cursor = db[collection].find(query)
 
     # Expand the cursor and construct the DataFrame
-    df =  pd.DataFrame(list(cursor))
+    df = pd.DataFrame(list(cursor))
 
     # Delete the _id
     if no_id:
@@ -41,5 +41,6 @@ def read_mongo(db, collection, query={}, host='localhost', port=27017, username=
 
     return df
 
+
 def save_one_user_record(userjson):
-    userjson 
+    userjson

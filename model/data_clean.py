@@ -11,7 +11,7 @@ import pickle as pickle
 
 from os.path import expanduser
 
-name_working_fodler = expanduser('~')+'/'
+name_working_fodler = expanduser('~') + '/'
 name_trian_meta_data = '_meta_data_train.json'
 
 
@@ -38,13 +38,13 @@ def save_input_meta_data(x_or_y, d):
          u'SpendingCat': [0, 1, 4, 2, 5, 3],
          u'Title': [u'Mr', u'Mrs', u'Miss', u'Master', u'Rare', u'the Countess']}
     """
-    
+
     usr_meta_data = {}
-    
+
     for c in d.columns:
-        a_dict = {c : d[c].unique().tolist()}
+        a_dict = {c: d[c].unique().tolist()}
         usr_meta_data.update(a_dict)
-    
+
     current_time = str(datetime.datetime.now())
     full_path = name_working_fodler + x_or_y + name_trian_meta_data
     if os.path.exists(full_path):
@@ -81,12 +81,12 @@ def convert_raw_perdict_usr_data(usr_json):
     metadata = load_input_meta_data()  # FIXME
     usrarr = np.array([])
     usrobj = json.loads(usr_json)
-    
+
     for key in metadata.keys:
         avalue = usrobj.get(key)
         one_hot_value = my_one_hot_encoder(metadata.get(key), avalue)
-        usrarr = np.hstack((usrarr, one_hot_value)) 
-    
+        usrarr = np.hstack((usrarr, one_hot_value))
+
     return usrarr
 
 
@@ -104,12 +104,12 @@ def my_one_hot_encoder(col_val_enum, data):
     enum_to_int = dict((t, i) for i, t in enumerate(col_val_enum))
     int_encoded = [enum_to_int[t] for t in data]
     onehot_encoded = list()
-    
+
     for v in int_encoded:
-        all_zero_arr = [0 for _ in range(len(col_val_enum)) ]
+        all_zero_arr = [0 for _ in range(len(col_val_enum))]
         all_zero_arr[v] = 1
         onehot_encoded.append(all_zero_arr)
-    
+
     return np.asarray(onehot_encoded)
 
 
@@ -134,17 +134,17 @@ def my_one_hot_encoder2(col_name, col_val_enum, col_data):
     for v in col_val_enum:
         if pd.isnull(v):
             v = "nan"
-        col_name_and_value.append(col_name +"_"+ str(v))
+        col_name_and_value.append(col_name + "_" + str(v))
 
     zeros = [0] * len(col_val_enum)
     zero_series = pd.Series(zeros, index=col_name_and_value)
     onehot_encoded = pd.DataFrame([])
-    
+
     for d in col_data:
         tmp = zero_series.copy()
-        tmp[col_name +"_"+ str(d)] = 1
-        onehot_encoded  = onehot_encoded.append(tmp, ignore_index=True)
-        
+        tmp[col_name + "_" + str(d)] = 1
+        onehot_encoded = onehot_encoded.append(tmp, ignore_index=True)
+
     return onehot_encoded
 
 

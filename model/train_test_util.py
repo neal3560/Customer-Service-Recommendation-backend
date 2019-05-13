@@ -144,7 +144,8 @@ def _get_n_predict_acc(X_test, y_test):
         if np.argmax(y_test.iloc[idx]) in top_3:
             count_correct += 1
 
-    return count_correct/X_test.__len__()
+    return count_correct / X_test.__len__()
+
 
 def get_user_from_json(user_json):
     """

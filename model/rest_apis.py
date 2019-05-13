@@ -18,6 +18,7 @@ api = Api(app)
 url_train_model = '/v1/ivr-rec/train'
 url_predict_ivr_for_one = '/v1/ivr-rec/predict-one'
 
+
 class TrainModel(Resource):
     """
     TODO need to consider to move it to another thread to avoid blocking.
@@ -31,7 +32,6 @@ class TrainModel(Resource):
 class PredictOne(Resource):
     user_json = request.get_json()
     user_arr = get_user_from_json(user_json)
-
 
     def get(self):
         return {}  # TODO need to implement it.
