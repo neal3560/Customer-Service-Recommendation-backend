@@ -1,5 +1,8 @@
 # from __future__ import absolute_import
+import warnings
+
 import pandas as pd
+from pandas import DataFrame
 from sklearn.model_selection import train_test_split
 import numpy as np
 from .data_clean import sort_columns, my_one_hot_encoder2, load_input_meta_data
@@ -67,11 +70,13 @@ def get_train_test_split2(data_X, data_y, test_siz=0.2, random_state=123):
     print("dummies shape: ", data_X_one_hot.shape)
     print("dummies columns: ", data_X_one_hot.columns)
 
+    data_y = my_one_hot_encoder2("y", y_meta['y'], data_y)
     X_train, X_test, y_train, y_test = train_test_split(
         data_X_one_hot, data_y, test_size=0.2, random_state=123)
 
-    y_train = my_one_hot_encoder2('y', y_meta['y'], y_train)
-    y_test = my_one_hot_encoder2('y', y_meta['y'], y_test)
+    # FIXME BUG: needs to move this up otherwise the index will not be good.
+    # y_train = my_one_hot_encoder2('y', y_meta['y'], y_train)
+    # y_test = my_one_hot_encoder2('y', y_meta['y'], y_test)
     return X_train, X_test, y_train, y_test
 
 
@@ -83,6 +88,7 @@ def train(X_train, y_train):
     model.add(Dropout(0.6))
     model.add(Dense(2000, init='normal', activation='relu'))
     model.add(Dropout(0.6))
+    # TODO the out put DIM should also come from y_train
     model.add(Dense(10, init='normal', activation='sigmoid'))
     model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 
@@ -136,14 +142,23 @@ def _get_validate_acc(X_test, y_test):
     return acc
 
 
-def _get_n_predict_acc(X_test, y_test):
+def _get_n_predict_acc(X_test, y_test: DataFrame):
     count_correct = 0
 
     for idx, value in X_test.iterrows():
         top_3 = predict_one(value.to_frame().T)
-        if np.argmax(y_test.iloc[idx]) in top_3:
-            count_correct += 1
+        # if np.argmax(y_test.iloc[idx]) in top_3:
+        # https://stackoverflow.com/a/46721064
+        warnings.simplefilter(action='ignore', category=FutureWarning)
+        iloc = y_test.loc[idx]
 
+        # Change the index from "y_0", "y_1"... to 0-9
+        iloc.index = list(range(iloc.size))
+        # Get the index of the max value
+        idxmax = iloc.idxmax()
+        if idxmax in top_3:
+            count_correct += 1
+    print("number of samples tested: ", X_test.__len__())
     return count_correct / X_test.__len__()
 
 

@@ -62,13 +62,14 @@ def read_and_train():
 
     print("X_train, y_train has a shape of: ", X_train.shape, y_train.shape)
     print("going to train.")
-    print('X_train:\n', X_train.head())
-    print('y_train:\n', y_train.head())
+    # FIXME the following code doesn't work and produces lots of error.
+    # print('X_train:\n', X_train.head())
+    # print('y_train:\n', y_train.head())
 
     # 6. train and save result
-    # history = train(X_train, y_train)
-    # print("history: ", history.history)
-    # print("final accuracy: ", history.history['acc'][-1])
+    history = train(X_train, y_train)
+    print("history: ", history.history)
+    print("final accuracy: ", history.history['acc'][-1])
 
     _get_validate_acc(X_test, y_test)
     #
