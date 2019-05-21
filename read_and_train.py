@@ -71,7 +71,7 @@ def read_and_train():
     print("history: ", history.history)
     print("final accuracy: ", history.history['acc'][-1])
 
-    _get_validate_acc(X_test, y_test)
+    validate_acc = _get_validate_acc(X_test, y_test)
     #
     # print("best three" + str(predict_one(X_test.iloc[:1])))
     #
@@ -79,7 +79,7 @@ def read_and_train():
     print("best three acc:" + str(_get_n_predict_acc(X_test, y_test)))
 
     # TODO save it to mongoDB.
-    # return history.history['acc'][-1]
+    return validate_acc
 
 
 if __name__ == "__main__":

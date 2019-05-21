@@ -143,6 +143,9 @@ def _get_validate_acc(X_test, y_test):
 
 
 def _get_n_predict_acc(X_test, y_test: DataFrame):
+    """
+    Get top 3 accuracy. TODO needs to make the N as variable.
+    """
     count_correct = 0
 
     for idx, value in X_test.iterrows():
