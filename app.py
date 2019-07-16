@@ -1,5 +1,8 @@
+#!python
 # -*- coding: utf-8 -*-
 """
+This app.py is the default name flask will look for. Start with python -m flask run
+
 Created on Wed Jun 20 20:34:21 2018
 
 @author: root
@@ -7,7 +10,6 @@ Created on Wed Jun 20 20:34:21 2018
 import os
 
 from flask import Flask, request
-from flask_restful import Resource, Api
 
 from model.train_test_util import get_user_from_json
 from read_and_train import read_and_train
@@ -37,6 +39,7 @@ def predictOne():
 
         return "{}"  # TODO need to implement it.
 
-# if __name__ == '__main__':
-#     with app.app_context():
-#         app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 6006)), debug=True)
+
+if __name__ == '__main__':
+    # with app.app_context():
+    app.run(host='0.0.0.0', port=6006, debug=True)
