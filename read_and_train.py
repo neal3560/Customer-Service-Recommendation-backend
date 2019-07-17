@@ -40,8 +40,8 @@ def read_and_train():
     # 1.1. sort columns
     usr_df.sort_index(axis=1)
 
-    print("fond number of usr records: ", usr_df.shape)
-    print("head of usr:\n ", usr_df.head(3))
+    print("found number of user records: ", usr_df.shape)
+    print("head of user:\n ", usr_df.head(3))
 
     # 2. drop some unused columns
     usr_df.drop(columns='Spending', inplace=True)

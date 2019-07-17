@@ -98,8 +98,7 @@ def train(X_train, y_train):
     return history
 
 
-model_name = '/tmp/trained_model.h5'
-
+model_name = os.path.join(os.path.expanduser('~'), "trained_model.h5")
 
 def _save_model(model):
     current_time = str(datetime.datetime.now().timestamp())

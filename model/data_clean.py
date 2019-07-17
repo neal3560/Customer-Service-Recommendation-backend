@@ -11,7 +11,7 @@ import pickle as pickle
 
 from os.path import expanduser
 
-name_working_fodler = expanduser('~') + '/'
+name_working_fodler = expanduser('~')
 name_trian_meta_data = '_meta_data_train.json'
 
 
@@ -46,10 +46,12 @@ def save_input_meta_data(x_or_y, d):
         usr_meta_data.update(a_dict)
 
     current_time = str(datetime.datetime.now())
-    full_path = name_working_fodler + x_or_y + name_trian_meta_data
+    full_path = os.path.join(name_working_fodler, x_or_y + name_trian_meta_data)
+    """
     if os.path.exists(full_path):
-        os.rename(full_path,
+        full_path = os.join(full_path,
                   name_working_fodler + current_time + x_or_y + name_trian_meta_data)
+    """
 
     with open(full_path, 'w') as f:
         json.dump(usr_meta_data, f)
@@ -62,7 +64,7 @@ def load_input_meta_data(x_or_y):
     return the meta data as dict
     see save_input_meta_data for the saved data
     """
-    full_path = name_working_fodler + x_or_y + name_trian_meta_data
+    full_path = os.path.join(name_working_fodler, x_or_y + name_trian_meta_data)
     with open(full_path, 'r') as f:
         dic = json.load(f)
         return dic
